@@ -58,7 +58,11 @@ target/
 
 # IDE
 .idea/
+*.sublime-*
 
-# External Libraries 
+# External Libraries
 wger/core/static/bower_components
 node_modules
+
+# Mac OS
+.DS_Store
