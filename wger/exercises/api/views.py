@@ -77,6 +77,7 @@ class ExerciseViewSet(viewsets.ModelViewSet):
         obj.set_author(self.request)
         obj.save()
 
+
 class ExerciseInfoViewSet(viewsets.ReadOnlyModelViewSet):
     '''
     API endpoint for exercise detailed info

@@ -56,11 +56,14 @@ class ExerciseImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = ExerciseImage
 
+
 class ExerciseInfoSerializer(serializers.ModelSerializer):
     '''
     Exercise serializer
     '''
+
     category = serializers.CharField(source='name', read_only=True)
+    
     class Meta:
         model = Exercise
         depth = 1
