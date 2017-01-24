@@ -73,7 +73,8 @@ def overview(request):
         # If it exists, load value from cache
         cached_total = cache.get(cache_mapper.get_nutrition_plan_key(int(plan.id)))
         if not cached_total:
-            cache.set(cache_mapper.get_nutrition_plan_key(int(plan.id)), plan.get_nutritional_values()['total']['energy'])
+            cache.set(cache_mapper.get_nutrition_plan_key(int(plan.id)),
+                      plan.get_nutritional_values()['total']['energy'])
             plan.cached_total = cache.get(cache_mapper.get_nutrition_plan_key(int(plan.id)))
         else:
             plan.cached_total = cached_total
