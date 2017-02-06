@@ -1,4 +1,5 @@
 from wger.settings_global import *
+import dj_database_url
 
 # Use 'DEBUG = True' to get more details for server errors
 DEBUG = True
@@ -43,7 +44,7 @@ MEDIA_URL = '/media/'
 ALLOWED_HOSTS = '*'
 
 # This might be a good idea if you setup memcached
-#SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+# SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 
 # Configure a real backend in production
 if DEBUG:
@@ -53,9 +54,9 @@ if DEBUG:
 WGER_SETTINGS['EMAIL_FROM'] = 'wger Workout Manager <wger@example.com>'
 
 # Your twitter handle, if you have one for this instance.
-#WGER_SETTINGS['TWITTER'] = ''
+# WGER_SETTINGS['TWITTER'] = ''
 
-import dj_database_url
+
 DATABASES['default'] = dj_database_url.config()
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
