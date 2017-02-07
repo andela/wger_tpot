@@ -7,7 +7,7 @@
 $(document).ready( function () {
     /* Make table sortable */
     $('#main_member_list').DataTable({
-        paging: false,
+        paging: true,
         bFilter: true,
         bInfo : false
     });
@@ -48,6 +48,14 @@ $(document).ready( function () {
         {% endif %}
     </td>
     {% endif %}
+    <!-- add status here -->
+    <td>
+      {% if current_user.obj.is_active %}
+          <p class="text-success"> {% trans "Active"%} </p>
+      {% else %}
+        <p class="text-danger"> {% trans "Inactive"%} </p>
+      {% endif %}
+    </td>
 </tr>
 {% endfor %}
 </tbody>

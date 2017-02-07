@@ -310,6 +310,7 @@ THUMBNAIL_ALIASES = {
 #
 # Django compressor
 #
+
 STATIC_ROOT = ''
 STATIC_URL = '/static/'
 
