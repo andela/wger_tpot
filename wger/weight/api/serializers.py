@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*- # noqa
 
 # This file is part of wger Workout Manager.
 #
@@ -21,9 +21,8 @@ from wger.weight.models import WeightEntry
 
 
 class WeightEntrySerializer(serializers.ModelSerializer):
-    '''
-    Weight serializer
-    '''
+
+    """ Weight serializer."""
 
     class Meta:
         model = WeightEntry
