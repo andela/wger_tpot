@@ -330,7 +330,7 @@ def connect_fitbit(request):
     if 'code' in request.GET:
         code = request.GET['code']
 
-        data    = "client_id=" + client_id + "&" +\
+        data = "client_id=" + client_id + "&" +\
                   "grant_type=" + "authorization_code" + "&" +\
                   "redirect_uri=" + redirect_uri + "&" +\
                   "code=" + code
