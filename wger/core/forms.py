@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*- # noqa
 
 # This file is part of wger Workout Manager.
 #
@@ -31,15 +31,15 @@ from wger.core.models import UserProfile
 
 
 class UserLoginForm(AuthenticationForm):
-    '''
+    """
     Form for logins
-
     Overwritten here just to change the label on the 'username' field
-    '''
+    """
     username = forms.CharField(label=_("Username or email"), max_length=254)
 
 
 class UserPreferencesForm(forms.ModelForm):
+
     class Meta:
         model = UserProfile
         fields = ('show_comments',
@@ -57,7 +57,8 @@ class UserPreferencesForm(forms.ModelForm):
 
 class UserEmailForm(forms.ModelForm):
     email = EmailField(label=_("Email"),
-                       help_text=_("Used for password resets and, optionally, email reminders."),
+                       help_text=_("Used for password resets and, optionally, \
+                                   email reminders."),
                        required=False)
 
     class Meta:
@@ -65,14 +66,15 @@ class UserEmailForm(forms.ModelForm):
         fields = ('email', )
 
     def clean_email(self):
-        '''
+        """
         Email must be unique system wide
 
         However, this check should only be performed when the user changes his
-        email, otherwise the uniqueness check will because it will find one user
-        (the current one) using the same email. Only when the user changes it, do
-        we want to check that nobody else has that email
-        '''
+        email, otherwise the uniqueness check will because it will find one
+        user
+        (the current one) using the same email. Only when the user changes
+        it, do we want to check that nobody else has that email
+        """
 
         email = self.cleaned_data["email"]
         if not email:
@@ -99,12 +101,12 @@ class UserPersonalInformationForm(UserEmailForm):
 
 
 class PasswordConfirmationForm(Form):
-    '''
+    """
     A simple password confirmation form.
 
     This can be used to make sure the user really wants to perform a dangerous
     action. The form must be initialised with a user object.
-    '''
+    """
     password = CharField(label=_("Password"),
                          widget=PasswordInput,
                          help_text=_('Please enter your current password.'))
@@ -114,9 +116,9 @@ class PasswordConfirmationForm(Form):
         super(PasswordConfirmationForm, self).__init__(data=data)
 
     def clean_password(self):
-        '''
+        """
         Check that the password supplied matches the one for the user
-        '''
+        """
         password = self.cleaned_data.get('password', None)
         if not self.user.check_password(password):
             raise ValidationError(_('Invalid password'))
@@ -124,38 +126,41 @@ class PasswordConfirmationForm(Form):
 
 
 class RegistrationForm(UserCreationForm, UserEmailForm):
-    '''
+    """
     Registration form
-    '''
+    """
 
     # Manually set the language to 'en', otherwise the language used seems to
     # randomly one of the application languages. This also appears to happen
-    # only on wger.de, perhaps because there the application is behind a reverse
-    # proxy. See  #281.
+    # only on wger.de, perhaps because there the application is
+    # behind a reverse proxy. See  #281.
+
     captcha = ReCaptchaField(attrs={'theme': 'clean', 'lang': 'en'},
                              label=_('Confirmation text'),
-                             help_text=_('As a security measure, please enter the previous words'))
+                             help_text=_('As a security measure, please enter \
+                             the previous words'))
 
 
 class RegistrationFormNoCaptcha(UserCreationForm, UserEmailForm):
-    '''
+    """
     Registration form without captcha field
 
     This is used when registering through an app, in that case there is not
     such a spam danger and simplifies the registration process on a mobile
     device.
-    '''
+    """
     pass
 
 
 class FeedbackRegisteredForm(forms.Form):
-    '''
-    Feedback form used for logged in users
-    '''
+    """
+    Feedback form used for logged in users.
+    """
     contact = forms.CharField(max_length=50,
                               min_length=10,
                               label=_('Contact'),
-                              help_text=_('Some way of answering you (email, etc.)'),
+                              help_text=_('Some way of answering you\
+                                          (email, etc.)'),
                               required=False)
 
     comment = forms.CharField(max_length=500,
@@ -167,9 +172,11 @@ class FeedbackRegisteredForm(forms.Form):
 
 
 class FeedbackAnonymousForm(FeedbackRegisteredForm):
-    '''
+    """
     Feedback form used for anonymous users (has additionally a reCaptcha field)
-    '''
+    """
+
     captcha = ReCaptchaField(attrs={'theme': 'clean'},
                              label=_('Confirmation text'),
-                             help_text=_('As a security measure, please enter the previous words'),)
+                             help_text=_('As a security measure, please enter\
+                              the previous words'),)

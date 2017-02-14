@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*- # noqa
 
 # This file is part of wger Workout Manager.
 #
@@ -24,10 +24,10 @@ from wger.core.models import Language
 
 @receiver(post_save, sender=Language)
 def init_language_config(sender, instance, created, **kwargs):
-    '''
+    """
     Creates language config entries when new languages are created
-    (all combinations of all languages)
-    '''
+    (all combinations of all languages).
+    """
     for language_source in Language.objects.all():
         for language_target in Language.objects.all():
             if not LanguageConfig.objects.filter(language=language_source)\

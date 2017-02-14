@@ -1,4 +1,4 @@
-"""
+""" # noqa
 WSGI config for workout_manager project.
 
 This module contains the WSGI application used by Django's development server

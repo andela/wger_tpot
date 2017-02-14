@@ -29,6 +29,7 @@ from wger.config.models import LanguageConfig
 from wger.exercises.api.serializers import (
     MuscleSerializer,
     ExerciseSerializer,
+    ExerciseInfoSerializer,
     ExerciseImageSerializer,
     ExerciseCategorySerializer,
     EquipmentSerializer,
@@ -47,9 +48,9 @@ from wger.utils.permissions import CreateOnlyPermission
 
 
 class ExerciseViewSet(viewsets.ModelViewSet):
-    '''
+    """
     API endpoint for exercise objects
-    '''
+    """
     queryset = Exercise.objects.all()
     serializer_class = ExerciseSerializer
     permission_classes = (IsAuthenticatedOrReadOnly, CreateOnlyPermission)
@@ -67,9 +68,9 @@ class ExerciseViewSet(viewsets.ModelViewSet):
                      'license_author')
 
     def perform_create(self, serializer):
-        '''
+        """
         Set author and status
-        '''
+        """
         language = load_language()
         obj = serializer.save(language=language)
         # Todo is it right to call set author after save?
@@ -77,13 +78,33 @@ class ExerciseViewSet(viewsets.ModelViewSet):
         obj.save()
 
 
+class ExerciseInfoViewSet(viewsets.ReadOnlyModelViewSet):
+    '''
+    API endpoint for exercise detailed info
+    '''
+    queryset = Exercise.objects.all()
+    serializer_class = ExerciseInfoSerializer
+    ordering_fields = '__all__'
+    filter_fields = ('category',
+                     'creation_date',
+                     'description',
+                     'language',
+                     'muscles',
+                     'muscles_secondary',
+                     'status',
+                     'name',
+                     'equipment',
+                     'license',
+                     'license_author')
+
+
 @api_view(['GET'])
 def search(request):
-    '''
+    """
     Searches for exercises.
 
     This format is currently used by the exercise search autocompleter
-    '''
+    """
     q = request.GET.get('term', None)
     results = []
     json_response = {}
@@ -124,9 +145,9 @@ def search(request):
 
 
 class EquipmentViewSet(viewsets.ReadOnlyModelViewSet):
-    '''
+    """
     API endpoint for equipment objects
-    '''
+    """
     queryset = Equipment.objects.all()
     serializer_class = EquipmentSerializer
     ordering_fields = '__all__'
@@ -134,9 +155,9 @@ class EquipmentViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 class ExerciseCategoryViewSet(viewsets.ReadOnlyModelViewSet):
-    '''
+    """
     API endpoint for exercise categories objects
-    '''
+    """
     queryset = ExerciseCategory.objects.all()
     serializer_class = ExerciseCategorySerializer
     ordering_fields = '__all__'
@@ -144,9 +165,9 @@ class ExerciseCategoryViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 class ExerciseImageViewSet(viewsets.ModelViewSet):
-    '''
+    """
     API endpoint for exercise image objects
-    '''
+    """
     queryset = ExerciseImage.objects.all()
     serializer_class = ExerciseImageSerializer
     permission_classes = (IsAuthenticatedOrReadOnly, CreateOnlyPermission)
@@ -159,9 +180,9 @@ class ExerciseImageViewSet(viewsets.ModelViewSet):
 
     @detail_route()
     def thumbnails(self, request, pk):
-        '''
+        """
         Return a list of the image's thumbnails
-        '''
+        """
         try:
             image = ExerciseImage.objects.get(pk=pk)
         except ExerciseImage.DoesNotExist:
@@ -178,9 +199,9 @@ class ExerciseImageViewSet(viewsets.ModelViewSet):
         return Response(thumbnails)
 
     def perform_create(self, serializer):
-        '''
+        """
         Set the license data
-        '''
+        """
         obj = serializer.save()
         # Todo is it right to call set author after save?
         obj.set_author(self.request)
@@ -188,9 +209,9 @@ class ExerciseImageViewSet(viewsets.ModelViewSet):
 
 
 class ExerciseCommentViewSet(viewsets.ReadOnlyModelViewSet):
-    '''
+    """
     API endpoint for exercise comment objects
-    '''
+    """
     queryset = ExerciseComment.objects.all()
     serializer_class = ExerciseCommentSerializer
     ordering_fields = '__all__'
@@ -199,9 +220,9 @@ class ExerciseCommentViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 class MuscleViewSet(viewsets.ReadOnlyModelViewSet):
-    '''
+    """
     API endpoint for muscle objects
-    '''
+    """
     queryset = Muscle.objects.all()
     serializer_class = MuscleSerializer
     ordering_fields = '__all__'

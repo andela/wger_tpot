@@ -26,14 +26,14 @@ from wger.weight.models import WeightEntry
 
 
 class BmiTestCase(WorkoutManagerTestCase):
-    '''
+    """
     Tests the BMI methods and views
-    '''
+    """
 
     def test_page(self):
-        '''
+        """
         Access the BMI page
-        '''
+        """
 
         response = self.client.get(reverse('nutrition:bmi:view'))
         self.assertEqual(response.status_code, 302)
@@ -43,10 +43,9 @@ class BmiTestCase(WorkoutManagerTestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_calculator(self):
-
-        '''
+        """
         Tests the calculator itself
-        '''
+        """
 
         self.user_login('test')
         response = self.client.post(reverse('nutrition:bmi:calculate'),
@@ -54,15 +53,15 @@ class BmiTestCase(WorkoutManagerTestCase):
                                      'weight': 80})
         self.assertEqual(response.status_code, 200)
         bmi = json.loads(response.content.decode('utf8'))
-        self.assertEqual(Decimal(bmi['bmi']), Decimal(24.69).quantize(TWOPLACES))
+        self.assertEqual(Decimal(bmi['bmi']),
+                         Decimal(24.69).quantize(TWOPLACES))
         self.assertEqual(Decimal(bmi['weight']), Decimal(80))
         self.assertEqual(Decimal(bmi['height']), Decimal(180))
 
     def test_calculator_imperial(self):
-
-        '''
+        """
         Tests the calculator using imperial units
-        '''
+        """
 
         self.user_login('test')
         profile = UserProfile.objects.get(user__username='test')
@@ -73,14 +72,16 @@ class BmiTestCase(WorkoutManagerTestCase):
                                      'weight': 176.36})
         self.assertEqual(response.status_code, 200)
         bmi = json.loads(response.content.decode('utf8'))
-        self.assertEqual(Decimal(bmi['bmi']), Decimal(24.69).quantize(TWOPLACES))
-        self.assertEqual(Decimal(bmi['weight']), Decimal(176.36).quantize(TWOPLACES))
+        self.assertEqual(Decimal(bmi['bmi']),
+                         Decimal(24.69).quantize(TWOPLACES))
+        self.assertEqual(Decimal(bmi['weight']),
+                         Decimal(176.36).quantize(TWOPLACES))
         self.assertEqual(Decimal(bmi['height']), Decimal(180))
 
     def test_automatic_weight_entry(self):
-        '''
+        """
         Tests that weight entries are automatically created or updated
-        '''
+        """
 
         self.user_login('test')
         user = User.objects.get(username=self.current_user)

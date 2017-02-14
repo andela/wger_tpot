@@ -19,32 +19,33 @@ from django.core.urlresolvers import reverse
 
 from wger.core.tests import api_base_test
 from wger.core.tests.base_testcase import WorkoutManagerAddTestCase
-from wger.core.tests.base_testcase import WorkoutManagerEditTestCase, WorkoutManagerTestCase
+from wger.core.tests.base_testcase import WorkoutManagerEditTestCase,
+WorkoutManagerTestCase
 from wger.utils.constants import TWOPLACES
 from wger.weight.models import WeightEntry
 
 
 class MealRepresentationTestCase(WorkoutManagerTestCase):
-    '''
+    """
     Test the representation of a model
-    '''
+    """
 
     def test_representation(self):
-        '''
+        """
         Test that the representation of an object is correct
-        '''
+        """
         self.assertEqual("{0}".format(WeightEntry.objects.get(pk=1)), '2012-10-01: 77.00 kg')
 
 
 class WeightEntryAccessTestCase(WorkoutManagerTestCase):
-    '''
+    """
     Test accessing the weight overview page
-    '''
+    """
 
     def test_access_shared(self):
-        '''
+        """
         Test accessing the URL of a shared weight overview
-        '''
+        """
         url = reverse('weight:overview', kwargs={'username': 'admin'})
 
         self.user_login('admin')
@@ -60,9 +61,9 @@ class WeightEntryAccessTestCase(WorkoutManagerTestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_access_not_shared(self):
-        '''
+        """
         Test accessing the URL of an unshared weight overview
-        '''
+        """
         url = reverse('weight:overview', kwargs={'username': 'test'})
 
         self.user_login('admin')
@@ -79,9 +80,9 @@ class WeightEntryAccessTestCase(WorkoutManagerTestCase):
 
 
 class AddWeightEntryTestCase(WorkoutManagerAddTestCase):
-    '''
+    """
     Tests adding a weight entry
-    '''
+    """
 
     object_class = WeightEntry
     url = 'weight:add'
@@ -92,9 +93,9 @@ class AddWeightEntryTestCase(WorkoutManagerAddTestCase):
 
 
 class EditWeightEntryTestCase(WorkoutManagerEditTestCase):
-    '''
+    """
     Tests editing a weight entry
-    '''
+    """
 
     object_class = WeightEntry
     url = 'weight:edit'
@@ -107,9 +108,9 @@ class EditWeightEntryTestCase(WorkoutManagerEditTestCase):
 
 
 class WeightEntryTestCase(api_base_test.ApiBaseResourceTestCase):
-    '''
+    """
     Tests the weight entry overview resource
-    '''
+    """
     pk = 3
     resource = WeightEntry
     private_resource = True

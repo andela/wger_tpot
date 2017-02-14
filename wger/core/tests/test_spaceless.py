@@ -1,4 +1,4 @@
-# This file is part of wger Workout Manager.
+# This file is part of wger Workout Manager. # noqa
 #
 # wger Workout Manager is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -22,16 +22,17 @@ logger = logging.getLogger(__name__)
 
 
 class SpacelessTestCase(WorkoutManagerTestCase):
-    '''
+    """
     Tests the custom spaceless template tag
-    '''
+    """
 
     def test_spaceless(self):
-        '''
+        """
         Tests the custom spaceless template tag
-        '''
+        """
         t = Template('{% load wger_extras %}'
-                     '{% spaceless_config %}<p>A text</p>   <p>more</p>{% endspaceless_config %}')
+                     '{% spaceless_config %}<p>A text</p>   \
+                     <p>more</p>{% endspaceless_config %}')
         context = Context()
 
         with self.settings(WGER_SETTINGS={'REMOVE_WHITESPACE': True}):

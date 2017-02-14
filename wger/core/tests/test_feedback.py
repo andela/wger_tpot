@@ -1,4 +1,4 @@
-# This file is part of wger Workout Manager.
+# This file is part of wger Workout Manager. # noqa
 #
 # wger Workout Manager is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -19,18 +19,19 @@ from wger.core.tests.base_testcase import WorkoutManagerTestCase
 
 
 class FeedbackTestCase(WorkoutManagerTestCase):
-    '''
-    Tests the feedback form
-    '''
+    """
+    Tests the feedback form.
+    """
 
     def send_feedback(self, logged_in=True):
-        '''
+        """
         Helper function
-        '''
+        """
         response = self.client.get(reverse('core:feedback'))
         self.assertEqual(response.status_code, 200)
         response = self.client.post(reverse('core:feedback'),
-                                    {'comment': 'A very long and interesting comment'})
+                                    {'comment': 'A very long and interesting\
+                                     comment'})
         if logged_in:
             self.assertEqual(response.status_code, 302)
             self.assertEqual(len(mail.outbox), 1)
@@ -38,7 +39,8 @@ class FeedbackTestCase(WorkoutManagerTestCase):
             self.assertEqual(response.status_code, 200)
 
             # Short comment
-            response = self.client.post(reverse('core:feedback'), {'comment': '12345'})
+            response = self.client.post(reverse('core:feedback'),
+                                        {'comment': '12345'})
             self.assertEqual(response.status_code, 200)
             self.assertEqual(len(response.context['form'].errors), 1)
         else:
@@ -48,7 +50,8 @@ class FeedbackTestCase(WorkoutManagerTestCase):
 
             # Correctly filled in reCaptcha
             response = self.client.post(reverse('core:feedback'),
-                                        {'comment': 'A very long and interesting comment',
+                                        {'comment': 'A very long and \
+                                        interesting comment',
                                          'g-recaptcha-response': 'PASSED'})
             self.assertEqual(response.status_code, 302)
             self.assertEqual(len(mail.outbox), 1)
@@ -56,24 +59,24 @@ class FeedbackTestCase(WorkoutManagerTestCase):
             self.assertEqual(response.status_code, 200)
 
     def test_send_feedback_admin(self):
-        '''
-        Tests the feedback form as an admin user
-        '''
+        """
+        Tests the feedback form as an admin user.
+        """
 
         self.user_login('admin')
         self.send_feedback()
 
     def test_send_feedback_user(self):
-        '''
-        Tests the feedback form as a regular user
-        '''
+        """
+        Tests the feedback form as a regular user.
+        """
 
         self.user_login('test')
         self.send_feedback()
 
     def test_send_feedback_logged_out(self):
-        '''
-        Tests the feedback form as a logged out user
-        '''
+        """
+        Tests the feedback form as a logged out user.
+        """
 
         self.send_feedback(logged_in=False)

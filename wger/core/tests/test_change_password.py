@@ -1,4 +1,4 @@
-# This file is part of wger Workout Manager.
+# This file is part of wger Workout Manager. # noqa
 #
 # wger Workout Manager is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -23,9 +23,9 @@ logger = logging.getLogger(__name__)
 
 
 class ChangePasswordTestCase(WorkoutManagerTestCase):
-    '''
-    Tests changing the password of a registered user
-    '''
+    """
+    Tests changing the password of a registered user.
+    """
 
     def change_password(self, fail=True):
 
@@ -42,7 +42,8 @@ class ChangePasswordTestCase(WorkoutManagerTestCase):
                      'new_password1': 'secret',
                      'new_password2': 'secret'}
 
-        response = self.client.post(reverse('core:user:change-password'), form_data)
+        response = self.client.post(reverse('core:user:change-password'),
+                                    form_data)
         self.assertEqual(response.status_code, 302)
 
         # Check the new password was accepted
@@ -53,16 +54,16 @@ class ChangePasswordTestCase(WorkoutManagerTestCase):
             self.assertTrue(user.check_password('secret'))
 
     def test_change_password_anonymous(self):
-        '''
-        Test changing a password as an anonymous user
-        '''
+        """
+        Test changing a password as an anonymous user.
+        """
 
         self.change_password()
 
     def test_copy_workout_logged_in(self, fail=True):
-        '''
-        Test changing a password as a logged in user
-        '''
+        """
+        Test changing a password as a logged in user.
+        """
 
         self.user_login('test')
         self.change_password(fail=False)

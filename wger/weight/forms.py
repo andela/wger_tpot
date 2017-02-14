@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*- # noqa
 
 # This file is part of wger Workout Manager.
 #
@@ -15,7 +15,8 @@
 # You should have received a copy of the GNU Affero General Public License
 
 from django import forms
-from django.forms import Form, CharField, Textarea, ModelForm, DateField, widgets
+from django.forms import (Form, CharField, Textarea, ModelForm,                                  DateField,
+                            widgets)
 from django.utils.translation import ugettext as _
 
 from wger.utils.constants import DATE_FORMATS
@@ -32,9 +33,9 @@ CSV_DATE_FORMAT = (('%d.%m.%Y', 'DD.MM.YYYY (30.01.2012)'),
 
 
 class WeightCsvImportForm(Form):
-    '''
+    """
     A helper form with only a textarea
-    '''
+    """
     csv_input = CharField(widget=Textarea, label=_('Input'))
     date_format = forms.ChoiceField(choices=CSV_DATE_FORMAT, label=_('Date format'))
 

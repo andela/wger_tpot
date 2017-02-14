@@ -1,4 +1,4 @@
-# This file is part of wger Workout Manager.
+# This file is part of wger Workout Manager. # noqa
 #
 # wger Workout Manager is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -20,9 +20,9 @@ from wger.core.tests.base_testcase import WorkoutManagerTestCase
 
 
 class RobotsTxtTestCase(WorkoutManagerTestCase):
-    '''
+    """
     Tests the generated robots.txt
-    '''
+    """
 
     def test_robots(self):
 
