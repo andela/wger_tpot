@@ -234,7 +234,7 @@ def registration(request):
             user.userprofile.notification_language = language
 
             # Set default gym, if needed
-            gym_config = GymConfig.objects.get(pk=1)
+            gym_config = GymConfig.objects.get_or_create(pk=1)
             if gym_config.default_gym:
                 user.userprofile.gym = gym_config.default_gym
 

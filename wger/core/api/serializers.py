@@ -16,14 +16,36 @@
 # along with Workout Manager.  If not, see <http://www.gnu.org/licenses/>.
 
 from rest_framework import serializers
+from django.contrib.auth import login as django_login
+from django.contrib.auth import authenticate
+from wger.config.models import GymConfig
+from wger.gym.models import GymUserConfig
+from django.utils import translation
 
 from wger.core.models import (
+    User,
     UserProfile,
     Language,
     DaysOfWeek,
     License,
     RepetitionUnit,
     WeightUnit)
+
+
+class UserSerializer(serializers.ModelSerializer):
+    '''Adding users via API. '''
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'password')
+        extra_kwargs = {'password': {'write_only': True}}
+
+    def create(self, validated_data):
+        user = User.objects.create_user(
+            username=validated_data['username'],
+            email=validated_data['email'],
+            password=validated_data['password'])
+        user.save()
+        return user
 
 
 class UserprofileSerializer(serializers.ModelSerializer):
