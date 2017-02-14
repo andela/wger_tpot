@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*- # noqa
 
 # This file is part of wger Workout Manager.
 #
@@ -23,14 +23,14 @@ from wger.utils.resources import UserObjectsOnlyAuthorization
 
 
 class WeightEntryResource(ModelResource):
-    '''
+    """
     Resource for weight entries
-    '''
+    """
 
     def authorized_read_list(self, object_list, bundle):
-        '''
+        """
         Filter to own objects
-        '''
+        """
         return object_list.filter(user=bundle.request.user)
 
     class Meta:
