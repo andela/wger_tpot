@@ -331,9 +331,9 @@ def connect_fitbit(request):
         code = request.GET['code']
 
         data = "client_id=" + client_id + "&" +\
-                  "grant_type=" + "authorization_code" + "&" +\
-                  "redirect_uri=" + redirect_uri + "&" +\
-                  "code=" + code
+               "grant_type=" + "authorization_code" + "&" +\
+               "redirect_uri=" + redirect_uri + "&" +\
+               "code=" + code
         headers = {
             'Authorization': 'Basic ' +
             base64.b64encode((client_id + ":" + client_secret).encode('UTF-8')).decode('ascii'),
