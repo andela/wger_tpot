@@ -1,4 +1,4 @@
-# This file is part of wger Workout Manager.
+# This file is part of wger Workout Manager. # noqa
 #
 # wger Workout Manager is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -26,30 +26,31 @@ from wger.core.tests.base_testcase import (
 
 
 class RepresentationTestCase(WorkoutManagerTestCase):
-    '''
+    """
     Test the representation of a model
-    '''
+    """
 
     def test_representation(self):
-        '''
+        """
         Test that the representation of an object is correct
-        '''
-        self.assertEqual("{0}".format(RepetitionUnit.objects.get(pk=1)), 'Repetitions')
+        """
+        self.assertEqual("{0}".format(RepetitionUnit.objects.get(pk=1)),
+                         'Repetitions')
 
 
 class OverviewTest(WorkoutManagerAccessTestCase):
-    '''
+    """
     Tests the settings unit overview page
-    '''
+    """
 
     url = 'core:repetition-unit:list'
     anonymous_fail = True
 
 
 class AddTestCase(WorkoutManagerAddTestCase):
-    '''
+    """
     Tests adding a new unit
-    '''
+    """
 
     object_class = RepetitionUnit
     url = 'core:repetition-unit:add'
@@ -66,9 +67,9 @@ class AddTestCase(WorkoutManagerAddTestCase):
 
 
 class DeleteTestCase(WorkoutManagerDeleteTestCase):
-    '''
+    """
     Tests deleting a unit
-    '''
+    """
 
     pk = 1
     object_class = RepetitionUnit
@@ -85,9 +86,9 @@ class DeleteTestCase(WorkoutManagerDeleteTestCase):
 
 
 class EditTestCase(WorkoutManagerEditTestCase):
-    '''
+    """
     Tests editing a unit
-    '''
+    """
 
     pk = 1
     object_class = RepetitionUnit
@@ -105,9 +106,9 @@ class EditTestCase(WorkoutManagerEditTestCase):
 
 
 class ApiTestCase(api_base_test.ApiBaseResourceTestCase):
-    '''
+    """
     Tests the unit resource
-    '''
+    """
     pk = 1
     resource = RepetitionUnit
     private_resource = False

@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*- # noqa
 
 # This file is part of wger Workout Manager.
 #
@@ -24,7 +24,7 @@ from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth.decorators import login_required
-from django.utils import formats
+from django.utils import formats  # noqa
 from django.utils.translation import ugettext as _
 from django.utils.translation import ugettext_lazy
 from django.db.models import Min
@@ -48,64 +48,67 @@ logger = logging.getLogger(__name__)
 
 
 class WeightAddView(WgerFormMixin, CreateView):
-    '''
+    """
     Generic view to add a new weight entry
-    '''
+    """
     model = WeightEntry
     form_class = WeightForm
     title = ugettext_lazy('Add weight entry')
     form_action = reverse_lazy('weight:add')
 
     def get_initial(self):
-        '''
+        """
         Set the initial data for the form.
 
         Read the comment on weight/models.py WeightEntry about why we need
         to pass the user here.
-        '''
+        """
         return {'user': self.request.user,
                 'date': datetime.date.today()}
 
     def form_valid(self, form):
-        '''
+        """
         Set the owner of the entry here
-        '''
+        """
         form.instance.user = self.request.user
         return super(WeightAddView, self).form_valid(form)
 
     def get_success_url(self):
-        '''
+        """
         Return to overview with username
-        '''
-        return reverse('weight:overview', kwargs={'username': self.object.user.username})
+        """
+        return reverse('weight:overview', kwargs={'username\
+        ': self.object.user.username})
 
 
 class WeightUpdateView(WgerFormMixin, UpdateView):
-    '''
+    """
     Generic view to edit an existing weight entry
-    '''
+    """
     model = WeightEntry
     form_class = WeightForm
 
     def get_context_data(self, **kwargs):
         context = super(WeightUpdateView, self).get_context_data(**kwargs)
-        context['form_action'] = reverse('weight:edit', kwargs={'pk': self.object.id})
+        context['form_action'] = reverse('weight:edit',
+                                         kwargs={'pk': self.object.id})
         context['title'] = _('Edit weight entry for the %s') % self.object.date
 
         return context
 
     def get_success_url(self):
-        '''
+        """
         Return to overview with username
-        '''
-        return reverse('weight:overview', kwargs={'username': self.object.user.username})
+        """
+        return reverse('weight:overview', kwargs={'username\
+                       ': self.object.user.username})
 
 
 @login_required
 def export_csv(request):
-    '''
+    """
     Exports the saved weight data as a CSV file
-    '''
+    """
 
     # Prepare the response headers
     response = HttpResponse(content_type='text/csv')
@@ -126,13 +129,13 @@ def export_csv(request):
 
 
 def overview(request, username=None):
-    '''
+    """
     Shows a plot with the weight data
 
     More info about the D3 library can be found here:
         * https://github.com/mbostock/d3
         * http://d3js.org/
-    '''
+    """
     is_owner, user = check_access(request.user, username)
 
     template_data = {}
@@ -142,12 +145,12 @@ def overview(request, username=None):
     max_date = WeightEntry.objects.filter(user=user).\
         aggregate(Max('date'))['date__max']
     if min_date:
-        template_data['min_date'] = 'new Date(%(year)s, %(month)s, %(day)s)' % \
+        template_data['min_date'] = 'new Date(%(year)s, %(month)s, %(day)s)' %\
                                     {'year': min_date.year,
                                      'month': min_date.month,
                                      'day': min_date.day}
     if max_date:
-        template_data['max_date'] = 'new Date(%(year)s, %(month)s, %(day)s)' % \
+        template_data['max_date'] = 'new Date(%(year)s, %(month)s, %(day)s)' %\
                                     {'year': max_date.year,
                                      'month': max_date.month,
                                      'day': max_date.day}
@@ -163,9 +166,9 @@ def overview(request, username=None):
 
 @api_view(['GET'])
 def get_weight_data(request, username=None):
-    '''
+    """
     Process the data to pass it to the JS libraries to generate an SVG image
-    '''
+    """
 
     is_owner, user = check_access(request.user, username)
 
@@ -193,9 +196,9 @@ class WeightCsvImportFormPreview(FormPreview):
     form_template = 'import_csv_form.html'
 
     def get_context(self, request, form):
-        '''
+        """
         Context for template rendering.
-        '''
+        """
 
         return {'form': form,
                 'stage_field': self.unused_name('stage'),
@@ -203,12 +206,14 @@ class WeightCsvImportFormPreview(FormPreview):
                 'form_action': reverse('weight:import-csv')}
 
     def process_preview(self, request, form, context):
-        context['weight_list'], context['error_list'] = helpers.parse_weight_csv(request,
-                                                                                 form.cleaned_data)
+        context['weight_list'], context['error_list\
+        '] = helpers.parse_weight_csv(request, form.cleaned_data)
         return context
 
     def done(self, request, cleaned_data):
-        weight_list, error_list = helpers.parse_weight_csv(request, cleaned_data)
+        weight_list, error_list = helpers.parse_weight_csv(request,
+                                                           cleaned_data)
         WeightEntry.objects.bulk_create(weight_list)
         return HttpResponseRedirect(reverse('weight:overview',
-                                            kwargs={'username': request.user.username}))
+                                            kwargs={'username\
+                                            ': request.user.username}))

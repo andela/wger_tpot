@@ -1,4 +1,4 @@
-# -*- coding: utf-8 *-*
+# -*- coding: utf-8 *-* # noqa
 
 # This file is part of wger Workout Manager.
 #
@@ -29,15 +29,15 @@ from wger.weight.models import WeightEntry
 
 
 class Command(BaseCommand):
-    '''
+    """
     Helper admin command to send out email reminders
-    '''
+    """
 
     help = 'Send out automatic emails to remind the user to enter the weight'
 
     def handle(self, **options):
 
-        profile_list = UserProfile.objects.filter(num_days_weight_reminder__gt=0)
+        profile_list = UserProfile.objects.filter(num_days_weight_reminder__gt=0)  # noqa
 
         for profile in profile_list:
 
@@ -49,7 +49,7 @@ class Command(BaseCommand):
             today = datetime.datetime.now().date()
 
             try:
-                last_entry = WeightEntry.objects.filter(user=profile.user).latest().date
+                last_entry = WeightEntry.objects.filter(user=profile.user).latest().date  # noqa
                 datediff = (today - last_entry).days
 
                 if datediff >= profile.num_days_weight_reminder:
@@ -59,12 +59,12 @@ class Command(BaseCommand):
 
     @staticmethod
     def send_email(user, last_entry, datediff):
-        '''
+        """
         Notify a user to input the weight entry
 
         :type user User
         :type last_entry Date
-        '''
+        """
 
         # Compose and send the email
         translation.activate(user.userprofile.notification_language.short_name)
@@ -75,7 +75,8 @@ class Command(BaseCommand):
                    'user': user}
 
         subject = _('You have to enter your weight')
-        message = loader.render_to_string('workout/email_weight_reminder.tpl', context)
+        message = loader.render_to_string('workout/email_weight_\
+        reminder.tpl', context)
         mail.send_mail(subject,
                        message,
                        settings.WGER_SETTINGS['EMAIL_FROM'],

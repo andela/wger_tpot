@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*- # noqa
 
 # This file is part of wger Workout Manager.
 #
@@ -34,11 +34,12 @@ logger = logging.getLogger(__name__)
 
 @python_2_unicode_compatible
 class LanguageConfig(models.Model):
-    '''
-    Configuration for languages
+    """
+    Configuration for languages.
 
-    Allows to specify what exercises and ingredients are shown for each language
-    '''
+    Allows to specify what exercises and ingredients are shown
+    for each language.
+    """
     SHOW_ITEM_EXERCISES = '1'
     SHOW_ITEM_INGREDIENTS = '2'
     SHOW_ITEM_LIST = (
@@ -58,38 +59,40 @@ class LanguageConfig(models.Model):
     show = models.BooleanField(default=1)
 
     class Meta:
-        '''
-        Set some other properties
-        '''
+        """
+        Set some other properties.
+        """
         ordering = ["item", "language_target", ]
 
     def __str__(self):
-        '''
-        Return a more human-readable representation
-        '''
+        """
+        Return a more human-readable representation.
+        """
         return u"Config for language {0}".format(self.language)
 
     def save(self, *args, **kwargs):
-        '''
-        Reset all cached infos
-        '''
+        """
+        Reset all cached infos.
+        """
 
         super(LanguageConfig, self).save(*args, **kwargs)
 
         # Cached objects
-        cache.delete(cache_mapper.get_language_config_key(self.language, self.item))
+        cache.delete(cache_mapper.get_language_config_key
+                     (self.language, self.item))
 
         # Cached template fragments
         delete_template_fragment_cache('muscle-overview', self.language_id)
         delete_template_fragment_cache('exercise-overview', self.language_id)
 
     def delete(self, *args, **kwargs):
-        '''
-        Reset all cached infos
-        '''
+        """
+        Reset all cached infos.
+        """
 
         # Cached objects
-        cache.delete(cache_mapper.get_language_config_key(self.language, self.item))
+        cache.delete(cache_mapper.get_language_config_key
+                     (self.language, self.item))
 
         # Cached template fragments
         delete_template_fragment_cache('muscle-overview', self.language_id)
@@ -100,35 +103,38 @@ class LanguageConfig(models.Model):
 
 @python_2_unicode_compatible
 class GymConfig(models.Model):
-    '''
-    System wide configuration for gyms
+    """
+    System wide configuration for gyms.
 
     At the moment this only allows to set one gym as the default
     TODO: close registration (users can only become members thorough an admin)
-    '''
+    """
 
     default_gym = models.ForeignKey(Gym,
                                     verbose_name=_('Default gym'),
-                                    help_text=_('Select the default gym for this installation. '
-                                                'This will assign all new registered users to this '
-                                                'gym and update all existing users without a '
+                                    help_text=_('Select the default gym for \
+                                    this installation. '
+                                                'This will assign all new \
+                                                registered users to this '
+                                                'gym and update all existing\
+                                                 users without a '
                                                 'gym.'),
                                     null=True,
                                     blank=True)
-    '''
-    Default gym for the wger installation
-    '''
+    """
+    Default gym for the wger installation.
+    """
 
     def __str__(self):
-        '''
-        Return a more human-readable representation
-        '''
+        """
+        Return a more human-readable representation.
+        """
         return u"Default gym {0}".format(self.default_gym)
 
     def save(self, *args, **kwargs):
-        '''
-        Perform additional tasks
-        '''
+        """
+        Perform additional tasks.
+        """
         if self.default_gym:
 
             # All users that have no gym set in the profile are edited
@@ -145,6 +151,7 @@ class GymConfig(models.Model):
                         config.gym = self.default_gym
                         config.user = user
                         config.save()
-                        logger.debug('Creating GymUserConfig for user {0}'.format(user.username))
+                        logger.debug('Creating GymUserConfig for user \
+                        {0}'.format(user.username))
 
         return super(GymConfig, self).save(*args, **kwargs)

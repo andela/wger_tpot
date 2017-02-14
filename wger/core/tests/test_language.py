@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*- # noqa
 
 # This file is part of wger Workout Manager.
 #
@@ -21,44 +21,45 @@ from wger.core.models import Language
 from wger.core.tests import api_base_test
 from wger.core.tests.base_testcase import WorkoutManagerAccessTestCase
 from wger.core.tests.base_testcase import WorkoutManagerAddTestCase
-from wger.core.tests.base_testcase import WorkoutManagerDeleteTestCase, WorkoutManagerTestCase
+from wger.core.tests.base_testcase import WorkoutManagerDeleteTestCase,
+WorkoutManagerTestCase
 from wger.core.tests.base_testcase import WorkoutManagerEditTestCase
 
 
 class LanguageRepresentationTestCase(WorkoutManagerTestCase):
-    '''
+    """
     Test the representation of a model
-    '''
+    """
 
     def test_representation(self):
-        '''
+        """
         Test that the representation of an object is correct
-        '''
+        """
         self.assertEqual("{0}".format(Language.objects.get(pk=1)), 'Deutsch (de)')
 
 
 class LanguageOverviewTest(WorkoutManagerAccessTestCase):
-    '''
+    """
     Tests accessing the system's languages
-    '''
+    """
 
     url = 'core:language:overview'
     anonymous_fail = True
 
 
 class LanguageDetailViewTest(WorkoutManagerAccessTestCase):
-    '''
+    """
     Tests accessing a detail view of a language
-    '''
+    """
 
     url = reverse_lazy('core:language:view', kwargs={'pk': 1})
     anonymous_fail = True
 
 
 class CreateLanguageTestCase(WorkoutManagerAddTestCase):
-    '''
+    """
     Tests adding a new language
-    '''
+    """
 
     object_class = Language
     url = 'core:language:add'
@@ -67,9 +68,9 @@ class CreateLanguageTestCase(WorkoutManagerAddTestCase):
 
 
 class EditLanguageTestCase(WorkoutManagerEditTestCase):
-    '''
+    """
     Tests adding a new language
-    '''
+    """
 
     object_class = Language
     url = 'core:language:edit'
@@ -79,9 +80,9 @@ class EditLanguageTestCase(WorkoutManagerEditTestCase):
 
 
 class DeleteLanguageTestCase(WorkoutManagerDeleteTestCase):
-    '''
+    """
     Tests adding a new language
-    '''
+    """
 
     object_class = Language
     url = 'core:language:delete'
@@ -89,9 +90,9 @@ class DeleteLanguageTestCase(WorkoutManagerDeleteTestCase):
 
 
 class LanguageApiTestCase(api_base_test.ApiBaseResourceTestCase):
-    '''
+    """
     Tests the language overview resource
-    '''
+    """
     pk = 1
     resource = Language
     private_resource = False
