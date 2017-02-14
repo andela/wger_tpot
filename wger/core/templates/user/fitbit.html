@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% load i18n staticfiles wger_extras %}
+
+{% block title %}{% trans "Connect your Fitbit Account" %}{% endblock %}
+
+{% block content %}
+<p>Use this import field to import your fitbit weight logs into Workout Manager.
+</p>
+<a href="{{ fitbit_authentication }}" class="btn btn-default"> Connect with Fitbit. </a>
+{% endblock %}

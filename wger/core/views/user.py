@@ -64,6 +64,11 @@ from wger.gym.models import (
     Contract
 )
 
+from fitbit import FitbitOauth2Client
+import requests
+import datetime
+import base64
+
 logger = logging.getLogger(__name__)
 
 
@@ -305,6 +310,65 @@ def preferences(request):
         return HttpResponseRedirect(reverse('core:user:preferences'))
     else:
         return render(request, 'user/preferences.html', template_data)
+
+@login_required
+def connect_fitbit(request):
+    '''
+    Connects user fitbit account to wger workout manager
+    '''
+    template_data = {}
+    client_id = settings.WGER_SETTINGS['CLIENT_ID']
+    client_secret = settings.WGER_SETTINGS['CLIENT_SECRET']
+    redirect_uri = 'http://127.0.0.1:8000/en/user/fitbit'
+    fitbit_client = FitbitOauth2Client(client_id, client_secret)
+
+    """
+        Receive a Fitbit response containing a verification code. Use the code
+        to fetch the access_token.
+    """
+    if 'code' in request.GET:
+        code = request.GET['code']
+
+        data    = "client_id="      + client_id + "&" +\
+                  "grant_type="     + "authorization_code"  + "&" +\
+                  "redirect_uri="   + redirect_uri  + "&" +\
+                  "code="           + code
+        headers = {
+            'Authorization': 'Basic ' + base64.b64encode((client_id + ":" + client_secret).encode('UTF-8')).decode('ascii'),
+            'Content-Type': 'application/x-www-form-urlencoded'}
+
+        res = requests.post(fitbit_client.request_token_url, data=data, headers=headers).json()
+
+        if 'access_token' in res:
+            token = res['access_token']
+            user_id = res['user_id']
+            headers = {
+                'Authorization': 'Bearer ' + token
+            }
+            response = requests.get('https://api.fitbit.com/1/user/' +
+                                    user_id + '/profile.json', headers=headers).json()
+            fitbit_weight = response['user']['weight']
+
+            # saves the weight data to the database handling UNIQUE constraint error
+            try:
+                weight = WeightEntry()
+                weight.weight = fitbit_weight
+                weight.user = request.user
+                weight.date = datetime.date.today()
+                weight.save()
+                messages.success(request, _(
+                       'Successfully synced weight data.'))
+
+            except :
+                messages.success(request, _(
+                       'Already synced weight data.'))
+                return HttpResponseRedirect(reverse('weight:overview',
+                                  kwargs={'username': request.user.username}))
+
+    #authorize wger to access user fitbit account
+    template_data['fitbit_authentication'] = fitbit_client.authorize_token_url(
+        redirect_uri=redirect_uri)[0]
+    return render(request, 'user/fitbit.html', template_data)
 
 
 class UserDeactivateView(LoginRequiredMixin,
