@@ -331,12 +331,12 @@ def connect_fitbit(request):
         code = request.GET['code']
 
         data    = "client_id=" + client_id + "&" +\
-                  "grant_type=" + "authorization_code"  + "&" +\
-                  "redirect_uri=" + redirect_uri  + "&" +\
+                  "grant_type=" + "authorization_code" + "&" +\
+                  "redirect_uri=" + redirect_uri + "&" +\
                   "code=" + code
         headers = {
-            'Authorization': 'Basic ' + base64.b64encode((client_id + ":" +
-                                client_secret).encode('UTF-8')).decode('ascii'),
+            'Authorization': 'Basic ' +
+            base64.b64encode((client_id + ":" + client_secret).encode('UTF-8')).decode('ascii'),
             'Content-Type': 'application/x-www-form-urlencoded'}
 
         res = requests.post(fitbit_client.request_token_url, data=data, headers=headers).json()
@@ -363,7 +363,7 @@ def connect_fitbit(request):
             except:
                 messages.success(request, _('Already synced weight data.'))
                 return HttpResponseRedirect(reverse('weight:overview',
-                                  kwargs={'username': request.user.username}))
+                                                    kwargs={'username': request.user.username}))
 
     template_data['fitbit_authentication'] = fitbit_client.authorize_token_url(
         redirect_uri=redirect_uri)[0]
